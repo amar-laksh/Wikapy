@@ -10,7 +10,38 @@ import re
 class Wikapy():
     def __init__(self):
         self.query = ""
-        
+        self.code = 0
+
+    def OnKeyboardEvent(self,event):
+     key = (event.Ascii)
+     if key == 126 and self.code == 0:     # ~ symbol
+         self.code = 1
+         print "You pressed ~ once with c=",self.code
+         
+     elif(key == 126 and self.code == 1):
+         self.code = 0
+         print "You pressed ~ once with c=",self.code
+     if key == 63 and self.code == 1:      # ? symbol
+         c = 0
+         while c != 1:
+             try:
+                 import speech_recognition as sr
+                 r = sr.Recognizer()
+                 m = sr.Microphone()
+                 c = 1
+             except:
+                 pass
+         self.init()
+     return True
+
+    def dae(self):
+        import pyHook, pythoncom, sys
+        hooks_manager = pyHook.HookManager ( )
+        hooks_manager.KeyDown = self.OnKeyboardEvent
+        hooks_manager.HookKeyboard ( )
+        pythoncom.PumpMessages () #pythoncom module is used to capture the key messages.
+
+            
     def speak(self,sent):
         import pyttsx
         engine = pyttsx.init()
@@ -20,14 +51,12 @@ class Wikapy():
         engine.say(sent)
         engine.runAndWait()
         engine.stop()
+        
 
     def STT(self):
         import speech_recognition as sr
-        try:
-            r = sr.Recognizer()
-            m = sr.Microphone()
-        except:
-            pass
+        r = sr.Recognizer()
+        m = sr.Microphone()
         with m as source:
             r.adjust_for_ambient_noise(source)
             print("Set minimum energy threshold to {}".format(r.energy_threshold))
@@ -43,6 +72,7 @@ class Wikapy():
                 print("Oops! Didn't catch that")
                 self.speak("Oops! Didn't catch that")
                 self.query=""
+
        
     def cleanhtml(self,raw_html):
         cleanr =re.compile('<.*?>')
@@ -58,6 +88,7 @@ class Wikapy():
             path = os.getcwd()
             path = path.replace("\\","/")
             try:
+                #self.query  = raw_input("please enter a string:")
                 self.STT()
                 for url in search(self.query ,stop=1):
                     urls.append(url)
@@ -76,6 +107,6 @@ class Wikapy():
                 pass
 while True:
         w = Wikapy()
-        w.init()
+        w.dae()
 
 
