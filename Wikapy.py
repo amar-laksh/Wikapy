@@ -2,7 +2,7 @@
 import win32api
 import win32con
 import urllib as u
-import urllib2
+import urllib2 as ur
 from BeautifulSoup import BeautifulSoup
 from google import search
 import re
@@ -95,14 +95,19 @@ class Wikapy():
                 mainurl = urls[0]
                 print "##############"
                 print mainurl
-                saved = u.urlretrieve(mainurl,'googled.html')
-                saveds = "file:///"+path + "/googled.html"
-                page = urllib2.urlopen(saveds)
+                sav = ur.urlopen(mainurl)
+                page = sav.read()
                 soup = BeautifulSoup(page)
                 x = soup.body.find('p')
                 print "################################"
                 print self.cleanhtml(str(x))
                 self.speak(self.cleanhtml(str(x)))
+                saveds = "./googled.html"
+                f = open(saveds,'w')
+                f.write(page)
+                f.close()
+
+                print '\a'
             except:
                 pass
 while True:
