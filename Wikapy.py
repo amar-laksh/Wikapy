@@ -75,8 +75,7 @@ class Wikapy():
 
        
     def cleanhtml(self,raw_html):
-        cleanr =re.compile('<.*?>')
-        cleantext = re.sub(cleanr,'', raw_html) #omitting tags
+        cleantext = re.sub(r'<.*?>','', raw_html) #omitting tags
         cleantext =re.sub(r'\([^)]*\)', '',cleantext) #omitting (a-Z)
         cleantext = re.sub(r'\[[^\]]*\]', '', cleantext) #omitting [0-9]
         cleantext = re.sub(r'/.*?/', '', cleantext) #omitting [/-- abstract chrs --/]
@@ -90,24 +89,22 @@ class Wikapy():
             try:
                 #self.query  = raw_input("please enter a string:")
                 self.STT()
-                for url in search(self.query ,stop=1):
-                    urls.append(url)
-                mainurl = urls[0]
-                print "##############"
-                print mainurl
+                mainurl = [urls.append(url) for url in search(self.query ,stop=1)]
+                mainurl = mainurl[0]
+                #print "##############"
+                #print mainurl
                 sav = ur.urlopen(mainurl)
                 page = sav.read()
                 soup = BeautifulSoup(page)
                 x = soup.body.find('p')
-                print "################################"
-                print self.cleanhtml(str(x))
+                #print "################################"
+                #print self.cleanhtml(str(x))
                 self.speak(self.cleanhtml(str(x)))
                 saveds = "./googled.html"
                 f = open(saveds,'w')
                 f.write(page)
                 f.close()
-
-                print '\a'
+                #print '\a'
             except:
                 pass
 while True:
