@@ -87,24 +87,17 @@ class Wikapy():
             path = os.getcwd()
             path = path.replace("\\","/")
             try:
-                #self.query  = raw_input("please enter a string:")
                 self.STT()
                 mainurl = [urls.append(url) for url in search(self.query ,stop=1)]
-                mainurl = mainurl[0]
-                #print "##############"
-                #print mainurl
-                sav = ur.urlopen(mainurl)
+                sav = ur.urlopen(mainurl[0])
                 page = sav.read()
                 soup = BeautifulSoup(page)
                 x = soup.body.find('p')
-                #print "################################"
-                #print self.cleanhtml(str(x))
                 self.speak(self.cleanhtml(str(x)))
                 saveds = "./googled.html"
                 f = open(saveds,'w')
                 f.write(page)
                 f.close()
-                #print '\a'
             except:
                 pass
 while True:
