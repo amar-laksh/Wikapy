@@ -6,6 +6,7 @@ import urllib2 as ur
 from BeautifulSoup import BeautifulSoup
 from google import search
 import re
+import wikipedia
 
 class Wikapy():
     def __init__(self):
@@ -88,12 +89,16 @@ class Wikapy():
             path = path.replace("\\","/")
             try:
                 self.STT()
+                """
                 mainurl = [urls.append(url) for url in search(self.query ,stop=1)]
                 sav = ur.urlopen(mainurl[0])
                 page = sav.read()
                 soup = BeautifulSoup(page)
                 x = soup.body.find('p')
-                self.speak(self.cleanhtml(str(x)))
+                
+                """
+                page = wikipedia.summary(str(self.query))
+                self.speak(self.cleanhtml(str(page)))
                 saveds = "./googled.html"
                 f = open(saveds,'w')
                 f.write(page)
