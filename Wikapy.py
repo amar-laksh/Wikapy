@@ -4,7 +4,6 @@ import win32con
 import urllib as u
 import urllib2 as ur
 from BeautifulSoup import BeautifulSoup
-from google import search
 import re
 import wikipedia
 
@@ -46,8 +45,10 @@ class Wikapy():
     def speak(self,sent):
         import pyttsx
         engine = pyttsx.init()
+        print "INIT END"
         engine.setProperty('rate',150)
         voiceid = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-GB_HAZEL_11.0'
+        print "voiceId"
         engine.setProperty('voice', voiceid)
         engine.say(sent)
         engine.runAndWait()
@@ -98,7 +99,7 @@ class Wikapy():
                 
                 """
                 page = wikipedia.summary(str(self.query))
-                self.speak(self.cleanhtml(str(page)))
+                self.speak(str(page))
                 saveds = "./googled.html"
                 f = open(saveds,'w')
                 f.write(page)
